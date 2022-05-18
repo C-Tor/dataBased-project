@@ -1,3 +1,6 @@
+# database connection file (since it depends per person)
+dbcon.js
+
 # Logs
 logs
 *.log
