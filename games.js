@@ -2,14 +2,14 @@ module.exports = function(){
   var express = require('express');
   var router = express.Router();
 
-  function getTeams(res, mysql, context, complete) {
-    console.log(" -- getting teams")
-    mysql.pool.query("SELECT team_id, hometown, team_name, div_id FROM teams ORDER BY div_id;", function (error, results, fields){
+  function getGames(res, mysql, context, complete) {
+    console.log(" -- getting games")
+    mysql.pool.query("SELECT game_id, home_team, away_team, home_score, away_score, game_date FROM games ORDER BY game_date;", function (error, results, fields){
       if(error) {
         res.write(JSON.stringify(error));
         res.end();
       }
-      context.teams = results;
+      context.games = results;
       complete();
     })
   }
@@ -18,11 +18,11 @@ module.exports = function(){
     var callbackCount = 0;
     var context = {};
     var mysql = req.app.get('mysql');
-    getTeams(res, mysql, context, complete);
+    getGames(res, mysql, context, complete);
     function complete(){
       callbackCount++;
       if(callbackCount >= 1) {
-        res.render('teams', context);
+        res.render('games', context);
       }
     }
   })

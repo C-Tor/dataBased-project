@@ -20,6 +20,11 @@ app.use('/teams', require('./teams.js'));
 //deals with any /players url
 app.use('/players', require('./players.js'));
 
+//deals with any /games url, you know the drill
+app.use('/games', require('./games.js'));
+
+app.use('/playerstats', require('./playerstats.js'));
+
 app.set('port', process.argv[2]);
 
 app.get('/', function(req, res, next) {

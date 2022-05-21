@@ -1,0 +1,52 @@
+<div class="list_container">
+  <h1>Teams</h1>
+  <table>
+    <thead>
+      <th>Player</th>
+      <th>Game</th>
+      <th>Points</th>
+      <th>Assists</th>
+      <th>Rebounds</th>
+    </thead>
+    <tbody>
+      {{#each playerstats}}
+      <tr>
+        <td>{{player_id}}</td>
+        <td>{{game_id}}</td>
+        <td>{{points}}</td>
+        <td>{{assists}}</td>
+        <td>{{rebounds}}</td>
+      </tr>
+      {{/each}}
+    </tbody>
+  </table>
+</div>
+
+<div class="crud">
+  <h2>Edit Data</h2>
+
+  <br>
+  <p>
+    Player Name: <input type="text" id="player_name" placeholder="Input player name here">
+  </p>
+  <br>
+  <p>
+    Player Team: <input type="text" id="player_team" placeholder="Input team here">
+  </p>
+  <br>
+  <p>
+    Player Number: <input type="text" id="player_number" placeholder="Input player number here">
+  </p>
+  <br>
+  <p>
+    Player ID: <input type="text" id="division" placeholder="Input team ID here">
+  </p>
+  <p><span class="notes">Player ID is required to update or delete data.</span></p>
+  <br>
+
+  <input type="submit" value="Add Player">
+  <input type="submit" value="Delete Player">
+  <input type="submit" value="Search Player">
+  <input type="submit" value="Update Player">
+
+</div>

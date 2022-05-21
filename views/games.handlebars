@@ -1,0 +1,61 @@
+<div class="list_container">
+  <h1>Teams</h1>
+  <table>
+    <thead>
+      <th>Game ID</th>
+      <th>Home Team</th>
+      <th>Away Team</th>
+      <th>Home Score </th>
+      <th>Away Score</th>
+      <th>Game Date</th>
+    </thead>
+    <tbody>
+      {{#each games}}
+      <tr>
+        <td>{{game_id}}</td>
+        <td>{{home_team}}</td>
+        <td>{{away_team}}</td>
+        <td>{{home_score}}</td>
+        <td>{{away_score}}</td>
+        <td>{{game_date}}</td>
+      </tr>
+      {{/each}}
+    </tbody>
+  </table>
+</div>
+
+<div class="crud">
+  <h2>Edit Data</h2>
+
+  <br>
+  <p>
+    Date: <input type="date" id="end" name="trip-end" value="2022-1-1" min="1800-01-01" max="3000-12-31">
+  </p>
+  <br>
+  <p>
+    Home Team: <input type="text" id="home_team" placeholder="Input home team here">
+  </p>
+  <br>
+  <p>
+    Away Team: <input type="text" id="losses" placeholder="Input away team here">
+  </p>
+  <br>
+  <p>
+    Home Score: <input type="text" id="home_score" placeholder="Input team homescore here">
+  </p>
+  <br>
+  <p>
+    Away Score: <input type="text" id="away_score" placeholder="Input away score here here">
+  </p>
+  <br>
+  <p>
+  Game ID: <input type="text" id="division" placeholder="Input team ID here">
+  </p>
+  <p><span class="notes">Game ID is required to update or delete data.</span></p>
+  <br>
+  <input type="submit" value="Add Game">
+  <input type="submit" value="Delete Game">
+  <input type="submit" value="Search Game">
+  <input type="submit" value="Update Game">
+
+</div>
