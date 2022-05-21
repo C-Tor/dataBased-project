@@ -1,11 +1,11 @@
---TABLES
---divisions
---teams
---players
---player_statistics
---games
+-- TABLES
+-- divisions
+-- teams
+-- players
+-- player_statistics
+-- games
 
---This resets the DB, (deletes db from bottom up) not sure if this is proper
+-- This resets the DB, (deletes db from bottom up) not sure if this is proper
 -- practice but it works and I don't get any constraint errors this way
 DROP TABLE IF EXISTS player_statistics;
 DROP TABLE IF EXISTS games;
@@ -13,7 +13,7 @@ DROP TABLE IF EXISTS players;
 DROP TABLE IF EXISTS teams;
 DROP TABLE IF EXISTS divisions;
 
---creates all the tables
+-- creates all the tables
 
 CREATE TABLE divisions (
   div_id int(11) NOT NULL AUTO_INCREMENT,
@@ -54,7 +54,7 @@ CREATE TABLE players (
 DROP TABLE IF EXISTS games;
 CREATE TABLE games (
   game_id int(11) NOT NULL AUTO_INCREMENT,
-  game_date date DEFAULT CURRENT_DATE,
+  game_date date DEFAULT NULL,
   home_team int(11),
   away_team int(11),
   home_score int DEFAULT 0,
@@ -86,7 +86,7 @@ CREATE TABLE player_statistics (
     ON DELETE CASCADE
 );
 
---insert values
+-- insert values
 INSERT INTO divisions (div_name) VALUES ('Eastern Conference'), ('Western Conference');
 
 INSERT INTO teams (team_name, hometown, div_id) VALUES

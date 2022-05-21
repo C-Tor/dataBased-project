@@ -1,8 +1,10 @@
 {
   "name": "DataBASED-project",
   "dependencies": {
-    "express": "^4.18.1",
-    "express-handlebars": "^6.0.6",
-    "mysql": "^2.18.1"
+    "body-parser": "^1.13.3",
+    "express": "^4.13.2",
+    "express-handlebars": "^2.0.1",
+    "express-session": "^1.11.3",
+    "mysql": "^2.8.0"
   }
 }
