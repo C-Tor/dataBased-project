@@ -25,6 +25,7 @@ app.use('/games', require('./games.js'));
 
 app.use('/playerstats', require('./playerstats.js'));
 
+//sets port to the argument given after calling the command to start the server (ie node main.js <port>)
 app.set('port', process.argv[2]);
 
 app.get('/', function(req, res, next) {
@@ -34,5 +35,5 @@ app.get('/', function(req, res, next) {
 
 
 app.listen(app.get('port'), function () {
-  console.log("Server listing on port " +app.get('port') + " Press Ctrl+C to terminate.");
+  console.log("Server listing on port " + app.get('port') + " Press Ctrl+C to terminate.");
 });
