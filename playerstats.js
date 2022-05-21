@@ -3,7 +3,7 @@ module.exports = function(){
   var router = express.Router();
 
   function getPlayerstats(res, mysql, context, complete) {
-    console.log(" -- getting players")
+    console.log(" -- getting playerstats")
     mysql.pool.query("SELECT player_id, game_id, points, assists, rebounds FROM player_statistics ORDER BY player_id;", function (error, results, fields){
       if(error) {
         res.write(JSON.stringify(error));
