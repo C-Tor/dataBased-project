@@ -4,7 +4,7 @@ module.exports = function(){
 
   function getTeams(res, mysql, context, complete) {
     console.log(" -- getting teams")
-    mysql.pool.query("SELECT team_id, hometown, team_name, div_id FROM teams ORDER BY div_id;", function (error, results, fields){
+    mysql.pool.query("SELECT divisions.div_name, hometown, team_name, team_id FROM teams JOIN divisions ON teams.div_id = divisions.div_id;", function (error, results, fields){
       if(error) {
         res.write(JSON.stringify(error));
         res.end();

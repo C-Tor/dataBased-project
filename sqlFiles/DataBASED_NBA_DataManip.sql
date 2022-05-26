@@ -22,6 +22,21 @@ DELETE FROM players WHERE players_id = :player_id_selected
 -- Games
 -- view games (sort by date?)
 SELECT home_team, away_team, away_score, home_score, game_date FROM games ORDER BY game_date;
+
+SELECT
+  game_id,
+  h_teams.team_name AS hometeam_name,
+  a_teams.team_name as awayteam_name,
+  home_score,
+  away_score,
+  game_date
+FROM games
+JOIN teams as h_teams
+  ON games.home_team = h_teams.team_id
+JOIN teams as a_teams
+  ON games.away_team = a_teams.team_id;
+
+SELECT h_teams.team_name AS hometeam_name, a_teams.team_name as awayteam_name, FROM games JOIN teams h_teams ON games.home_team = h_teams.team_id JOIN teams a_teams ON games.away_team = a_teams.team_id;
 -- Add Game
 INSERT INTO games (home_team, away_team, away_score, home_score, game_date) VALUES (:home_teamInput, :away_teamInput, :away_scoreInput, :home_scoreInput, :game_dateInput)
 -- Update Games

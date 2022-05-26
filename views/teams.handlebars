@@ -2,18 +2,18 @@
   <h1>Teams</h1>
   <table>
     <thead>
-      <th>Team ID</th>
+      <th>Division</th>
       <th>Home Town</th>
       <th>Team</th>
-      <th>Division</th>
+      <th>Team ID</th>
     </thead>
     <tbody>
       {{#each teams}}
       <tr>
-        <td>{{team_id}}</td>
+        <td>{{div_name}}</td>
         <td>{{hometown}}</td>
         <td>{{team_name}}</td>
-        <td>{{div_id}}</td>
+        <td>{{team_id}}</td>
       </tr>
       {{/each}}
     </tbody>

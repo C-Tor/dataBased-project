@@ -1,25 +1,23 @@
 <div class="list_container">
-  <h1>Teams</h1>
+  <h1>Players</h1>
   <table>
     <thead>
-      <th>Player ID</th>
+      <th>Team</th>
       <th>First Name</th>
       <th>Last Name</th>
       <th>Number</th>
       <th>Birthdate</th>
       <th>Position</th>
-      <th>Team ID</th>
     </thead>
     <tbody>
       {{#each players}}
       <tr>
-        <td>{{player_id}}</td>
+        <td>{{team_name}}</td>
         <td>{{fname}}</td>
         <td>{{lname}}</td>
         <td>{{player_number}}</td>
         <td>{{player_birthdate}}</td>
         <td>{{position}}</td>
-        <td>{{team_id}}</td>
       </tr>
       {{/each}}
     </tbody>
