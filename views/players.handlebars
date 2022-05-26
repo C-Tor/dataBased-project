@@ -27,28 +27,46 @@
 <div class="crud">
   <h2>Edit Data</h2>
 
+<form class="" action="/players" method="post">
   <br>
   <p>
-    Player Name: <input type="text" id="player_name" placeholder="Input player name here">
+    First Name: <input type="text" id="player_fname" placeholder="Input player name here" name="fname">
   </p>
   <br>
   <p>
-    Player Team: <input type="text" id="player_team" placeholder="Input team here">
+    Middle Name: <input type="text" id="player_mname" placeholder="Input player number here" name = "mname">
   </p>
   <br>
   <p>
-    Player Number: <input type="text" id="player_number" placeholder="Input player number here">
+    Last Name*: <input type="text" id="player_lname" placeholder="Input player name here" name = "lname">
   </p>
   <br>
   <p>
-    Player ID: <input type="text" id="division" placeholder="Input team ID here">
+    Team: <select name="team">
+      {{#each teams}}
+        <option value="{{team_id}}"> {{team_name}}</option>
+      {{/each}}
+    </select>
   </p>
-  <p><span class="notes">Player ID is required to update or delete data.</span></p>
   <br>
+  <p>
+    Jersey Number: <input type="text" id="player_number" placeholder="Input player number here" name = "number">
+  </p>
+  <br>
+  <p>
+    Birthdate: <input type="text" id="birthdate" placeholder="Input player number here" name = "birthdate">
+  </p>
+  <br>
+  <p>
+    Position: <input type="text" id="player_number" placeholder="Input player number here" name = "position">
+  </p>
+  <p><span class="notes">*indicates a required field</span></p>
+  <br>
+</form>
 
   <input type="submit" value="Add Player">
-  <input type="submit" value="Delete Player">
+  <!-- <input type="submit" value="Delete Player">
   <input type="submit" value="Search Player">
-  <input type="submit" value="Update Player">
+  <input type="submit" value="Update Player"> -->
 
 </div>
