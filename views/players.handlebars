@@ -25,7 +25,7 @@
 </div>
 
 <div class="crud">
-  <h2>Edit Data</h2>
+  <h2>Add Player</h2>
 
 <form class="" action="/players" method="post">
   <br>
@@ -44,7 +44,7 @@
   <p>
     Team: <select name="team">
       {{#each teams}}
-        <option value="{{team_id}}"> {{team_name}}</option>
+        <option value="{{id}}"> {{team_name}}</option>
       {{/each}}
     </select>
   </p>
@@ -54,7 +54,7 @@
   </p>
   <br>
   <p>
-    Birthdate: <input type="text" id="birthdate" placeholder="Input player number here" name = "birthdate">
+    Birthdate: <input type="date" id="birthdate" name = "birthdate" value="">
   </p>
   <br>
   <p>
@@ -62,9 +62,10 @@
   </p>
   <p><span class="notes">*indicates a required field</span></p>
   <br>
+  <input type="submit" value="Add Player">
 </form>
 
-  <input type="submit" value="Add Player">
+
   <!-- <input type="submit" value="Delete Player">
   <input type="submit" value="Search Player">
   <input type="submit" value="Update Player"> -->

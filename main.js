@@ -13,6 +13,7 @@ app.engine('handlebars', handlebars.engine);
 app.set('view engine', 'handlebars');
 app.set('mysql', mysql);
 app.use(express.static('public'));
+app.use(bodyParser.urlencoded({extended:true}));
 
 //deals with any /teams url
 app.use('/teams', require('./teams.js'));

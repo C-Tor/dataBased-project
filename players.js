@@ -11,7 +11,7 @@ module.exports = function(){
       }
       context.players = results;
       complete();
-    })
+    });
   }
 
   function getTeams(res, mysql, context, complete){
@@ -42,7 +42,16 @@ module.exports = function(){
 
   router.post('/', function(req, res) {
     var mysql = req.app.get('mysql');
-    var sql = "INSERT INTO players (fname, mname, lname, team_id )"
+    var sql = "INSERT INTO players (fname, mname, lname, team_id, player_number, player_birthdate, position) VALUES (?,?,?,?,?,?,?);";
+    var inserts = [req.body.fname, req.body.mname, req.body.lname, req.body.team, req.body.number, req.body.birthdate, req.body.position];
+    sql = mysql.pool.query(sql, inserts, function(error, results, fields){
+      if(error) {
+        console.log(error);
+        res.write(JSON.stringify(error));
+        res.end();
+      }
+      res.redirect('/players');
+    });
   });
 
   return router;
