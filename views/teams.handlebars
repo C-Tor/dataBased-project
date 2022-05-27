@@ -5,7 +5,6 @@
       <th>Division</th>
       <th>Home Town</th>
       <th>Team</th>
-      <th>Team ID</th>
     </thead>
     <tbody>
       {{#each teams}}
@@ -13,7 +12,6 @@
         <td>{{div_name}}</td>
         <td>{{hometown}}</td>
         <td>{{team_name}}</td>
-        <td>{{team_id}}</td>
       </tr>
       {{/each}}
     </tbody>
@@ -21,37 +19,31 @@
 </div>
 
 <div class="crud">
-  <h2>Edit Data</h2>
-  <br>
-  <p>
-  Team Name: <input type="text" id="team_name" placeholder="Input team name here">
-  </p>
-  <br>
-  <p>
-  Wins: <input type="text" id="wins" placeholder="Input team wins here">
-  </p>
-  <br>
-  <p>
-  Losses: <input type="text" id="losses" placeholder="Input team losses here">
-  </p>
-  <br>
-  <p>
-  Hometown: <input type="text" id="hometown" placeholder="Input team hometown here">
-  </p>
-  <br>
-  <p>
-  Division: <input type="text" id="division" placeholder="Input team division here">
-  </p>
-  <br>
-  <p>
-  Team ID: <input type="text" id="division" placeholder="Input team ID here">
-  </p>
-  <p><span class="notes">Team ID is required to update or delete data.</span></p>
-  <br>
+  <h2>Add Team</h2>
+
+  <form class="" action="/teams" method="post">
+    <br>
+    <p>
+    Team Name: <input type="text" id="team_name" placeholder="Input team name here" name="team_name">
+    </p>
+    <br>
+    <p>
+    Hometown: <input type="text" id="hometown" placeholder="Input team hometown here" name="hometown">
+    </p>
+    <br>
+    <p>
+      Division <select name="division">
+        {{#each divisions}}
+          <option value="{{id}}"> {{div_name}}</option>
+        {{/each}}
+      </select>
+    </p>
+    <br>
+    <input type="submit" value="Add Team">
+  </form>
 
 
-  <input type="submit" value="Add Team">
-  <input type="submit" value="Search Team">
-  <input type="submit" value="Update Team">
-  <input type="submit" value="Delete Team">
+
+
+
 </div>

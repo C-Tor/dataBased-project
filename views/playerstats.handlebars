@@ -25,26 +25,29 @@
 </div>
 
 <div class="crud">
-  <h2>Edit Data</h2>
+  <h2>Add Player Statistic</h2>
 
-  <br>
-  <p>
-    Player Name: <input type="text" id="player_name" placeholder="Input player name here">
-  </p>
-  <br>
-  <p>
-    Player Team: <input type="text" id="player_team" placeholder="Input team here">
-  </p>
-  <br>
-  <p>
-    Player Number: <input type="text" id="player_number" placeholder="Input player number here">
-  </p>
-  <br>
-  <p>
-    Player ID: <input type="text" id="division" placeholder="Input team ID here">
-  </p>
-  <p><span class="notes">Player ID is required to update or delete data.</span></p>
-  <br>
+  <form class="" action="/playerstats" method="post">
+    <br>
+    <p>
+      Player Name: <input type="text" id="player_name" placeholder="Input player name here">
+    </p>
+    <br>
+    <p>
+      Player Team: <input type="text" id="player_team" placeholder="Input team here">
+    </p>
+    <br>
+    <p>
+      Player Number: <input type="text" id="player_number" placeholder="Input player number here">
+    </p>
+    <br>
+    <p>
+      Player ID: <input type="text" id="division" placeholder="Input team ID here">
+    </p>
+    <p><span class="notes">Player ID is required to update or delete data.</span></p>
+    <br>
+  </form>
+
 
   <input type="submit" value="Add Player">
   <input type="submit" value="Delete Player">

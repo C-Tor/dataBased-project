@@ -14,17 +14,45 @@ module.exports = function(){
     })
   }
 
+  //used to populate the teams dropdown menu
+  function getTeams(res, mysql, context, complete){
+    console.log(" -- getting teams for games page");
+    mysql.pool.query("SELECT team_id as id, team_name FROM teams;", function(error, results, fields){
+      if(error) {
+        res.write(JSON.stringify(error));
+        res.end();
+      }
+      context.teams = results;
+      complete();
+    })
+  }
+
   router.get('/', function(req, res) {
     var callbackCount = 0;
     var context = {};
     var mysql = req.app.get('mysql');
     getGames(res, mysql, context, complete);
+    getTeams(res, mysql, context, complete);
     function complete(){
       callbackCount++;
-      if(callbackCount >= 1) {
+      if(callbackCount >= 2) {
         res.render('games', context);
       }
     }
+  })
+
+  router.post('/', function(req, res) {
+    var mysql = req.app.get('mysql');
+    var sql = "INSERT INTO games (game_date, home_team, away_team, home_score, away_score) VALUES (?,?,?,?,?);";
+    var inserts = [req.body.gamedate, req.body.hometeam, req.body.awayteam, req.body.homescore, req.body.awayscore];
+    sql = mysql.pool.query(sql, inserts, function(error, results, fields) {
+      if(error) {
+        console.log(error);
+        res.write(JSON.stringify(error));
+        res.end();
+      }
+      res.redirect('/games');
+    })
   })
 
   return router;

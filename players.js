@@ -14,6 +14,7 @@ module.exports = function(){
     });
   }
 
+  //used to populate team dropdown menus
   function getTeams(res, mysql, context, complete){
     console.log(" -- getting teams for player page");
     mysql.pool.query("SELECT team_id as id, team_name FROM teams;", function(error, results, fields){

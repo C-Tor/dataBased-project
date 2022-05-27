@@ -15,7 +15,7 @@ DELETE FROM teams WHERE team_id = :team_id_to_delete;
 SELECT player_id, fname, lname, player_number, player_birthdate, position, team_id FROM players ORDER BY team_id;-- Add player
 INSERT INTO players (player_name, player_number, player_birthday, player_position) VALUES (:player_nameInput, :player_numberInput, :player_birthdayInput, :player_positionInput)
 -- Update player
-UPDATE players SET player_name = :player_nameInput, player_number = :player_numberInput, player_birthday = :player_birthdayInput, player_position = :player_positionInput WHERE player_id= :player_id_selected
+UPDATE players SET player_name = :player_nameInput, player_numberD = :player_numberInput, player_birthday = :player_birthdayInput, player_position = :player_positionInput WHERE player_id= :player_id_selected
 -- Delete player via ID
 DELETE FROM players WHERE players_id = :player_id_selected
 
