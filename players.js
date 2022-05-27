@@ -4,7 +4,7 @@ module.exports = function(){
 
   function getPlayers(res, mysql, context, complete) {
     console.log(" -- getting players")
-    mysql.pool.query("SELECT teams.team_name, players.fname, players.lname, players.player_number, players.player_birthdate, players.position FROM players INNER JOIN teams ON players.team_id = teams.team_id ORDER BY teams.team_name;", function (error, results, fields){
+    mysql.pool.query("SELECT teams.team_name, players.fname, players.lname, players.player_number, DATE_FORMAT(players.player_birthdate, '%b %D, %Y') AS birth_date, players.position FROM players INNER JOIN teams ON players.team_id = teams.team_id ORDER BY teams.team_name;", function (error, results, fields){
       if(error) {
         res.write(JSON.stringify(error));
         res.end();
@@ -41,6 +41,7 @@ module.exports = function(){
     }
   })
 
+  //handles post requests (inserting data)
   router.post('/', function(req, res) {
     var mysql = req.app.get('mysql');
     var sql = "INSERT INTO players (fname, mname, lname, team_id, player_number, player_birthdate, position) VALUES (?,?,?,?,?,?,?);";

@@ -14,18 +14,60 @@ module.exports = function(){
     })
   }
 
+  function getPlayers(res, mysql, context, complete) {
+    console.log(" -- getting players for playerstats")
+    mysql.pool.query("SELECT teams.team_name, players.fname as pfname, players.lname as plname, players.player_number, players.player_birthdate, players.position, players.player_id as player_id FROM players INNER JOIN teams ON players.team_id = teams.team_id ORDER BY teams.team_name;", function (error, results, fields){
+      if(error) {
+        res.write(JSON.stringify(error));
+        res.end();
+      }
+      context.players = results;
+      complete();
+    });
+  }
+
+  function getGames(res, mysql, context, complete) {
+    console.log(" -- getting games for playerstats")
+    mysql.pool.query("SELECT game_id, h_teams.team_name AS hometeam_name, a_teams.team_name as awayteam_name, home_score, away_score, DATE_FORMAT(game_date, '%a %b %D, %Y') AS gdate FROM games JOIN teams as h_teams ON games.home_team = h_teams.team_id JOIN teams as a_teams ON games.away_team = a_teams.team_id ORDER BY game_date;", function (error, results, fields){
+      if(error) {
+        res.write(JSON.stringify(error));
+        res.end();
+      }
+      context.games = results;
+      complete();
+    })
+  }
+
   router.get('/', function(req, res) {
     var callbackCount = 0;
     var context = {};
     var mysql = req.app.get('mysql');
     getPlayerstats(res, mysql, context, complete);
+    getPlayers(res, mysql, context, complete);
+    getGames(res, mysql, context, complete);
     function complete(){
       callbackCount++;
-      if(callbackCount >= 1) {
+      if(callbackCount >= 3) {
         res.render('playerstats', context);
       }
     }
   })
+
+
+  router.post('/', function(req, res) {
+    var mysql = req.app.get('mysql');
+    var sql = "INSERT INTO playerstats (player_id, game_id, points, assists, rebounds) VALUES (?,?,?,?,?);";
+    var inserts = [req.body.player, req.body.game, req.body.points, req.body.assists, req.body.rebounds];
+    sql = mysql.pool.query(sql, inserts, function(error, results, fields){
+      if(error) {
+        console.log(error);
+        res.write(JSON.stringify(error));
+        res.end();
+      }
+      res.redirect('/playerstats');
+    });
+  });
+
 
   return router;
 

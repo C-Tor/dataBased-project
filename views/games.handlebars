@@ -2,7 +2,6 @@
   <h1>Games</h1>
   <table>
     <thead>
-      <th>Game ID</th>
       <th>Home Team</th>
       <th>Away Team</th>
       <th>Home Score </th>
@@ -12,12 +11,11 @@
     <tbody>
       {{#each games}}
       <tr>
-        <td>{{game_id}}</td>
         <td>{{hometeam_name}}</td>
         <td>{{awayteam_name}}</td>
         <td>{{home_score}}</td>
         <td>{{away_score}}</td>
-        <td>{{game_date}}</td>
+        <td>{{gdate}}</td>
       </tr>
       {{/each}}
     </tbody>
@@ -50,11 +48,11 @@
     </p>
     <br>
     <p>
-      Home Score: <input type="text" id="home_score" placeholder="Input home team's score here" name="homescore">
+      Home Score: <input type="number" id="home_score" placeholder="Home points" name="homescore">
     </p>
     <br>
     <p>
-      Away Score: <input type="text" id="away_score" placeholder="Input away score here here" name="awayscore">
+      Away Score: <input type="number" id="away_score" placeholder="Away points" name="awayscore">
     </p>
     <br>
     <input type="submit" value="Add Game">
