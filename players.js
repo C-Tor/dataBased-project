@@ -85,6 +85,21 @@ module.exports = function(){
     });
   });
 
+  router.put('/:id', function(req, res) {
+    var mysql = req.app.get('mysql');
+    var sql = "UPDATE players SET fname=?, mname=?, lname=?, team_id=?, player_number=?, player_birthdate=?, position=? WHERE player_id=?;";
+    var inserts = [req.body.fname, req.body.mname, req.body.lname, req.body.team, req.body.number, req.body.birthdate, req.body.position, req.params.id];
+    sql = mysql.pool.query(sql, inserts, function(error, results, fields){
+      if (error) {
+        console.log(error);
+        res.write(JSON.stringify(error));
+        res.end();
+      }
+      res.status(200);
+      res.end();
+    })
+  })
+
   return router;
 
 }();

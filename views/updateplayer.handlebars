@@ -2,7 +2,7 @@
 <div class="crud">
   <h2>Update {{player.fname}} {{player.lname}}</h2>
 
-  <form class="update-player" action="/players" method="post">
+  <form id="update-player" action="/players" method="post">
     <p>
       First Name: <input type="text" name="fname" value="{{player.fname}}">
     </p>
@@ -29,9 +29,9 @@
       Position: <input type="text" name = "position" value="{{player.position}}">
     </p>
     <p><span class="notes">*indicates a required field</span></p>
-    <input type="submit" value="Add Player">
   </form>
+  <button type="button" onclick="updatePlayer({{player.player_id}})">Update Player</button>
 
-  <script defer>selectTeam({{person.team_id}})</script>
+  <script defer>selectTeam({{person.team_id}});</script>
 
 </div>
