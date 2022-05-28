@@ -4,7 +4,7 @@ module.exports = function(){
 
   function getPlayers(res, mysql, context, complete) {
     console.log(" -- getting players")
-    mysql.pool.query("SELECT teams.team_name, players.fname, players.lname, players.player_number, DATE_FORMAT(players.player_birthdate, '%b %D, %Y') AS birth_date, players.position FROM players INNER JOIN teams ON players.team_id = teams.team_id ORDER BY teams.team_name;", function (error, results, fields){
+    mysql.pool.query("SELECT players.player_id, teams.team_name, players.fname, players.lname, players.player_number, DATE_FORMAT(players.player_birthdate, '%b %D, %Y') AS birth_date, players.position FROM players INNER JOIN teams ON players.team_id = teams.team_id ORDER BY teams.team_name;", function (error, results, fields){
       if(error) {
         res.write(JSON.stringify(error));
         res.end();
@@ -27,6 +27,20 @@ module.exports = function(){
     })
   }
 
+  //get player with an id, used for update player page
+  function getPlayer(res, mysql, context, id, complete) {
+    var sql ="SELECT player_id, fname, mname, lname, player_number AS number, player_birthdate, position, team_id FROM players WHERE player_id = ?"
+    var inserts = [id];
+    mysql.pool.query(sql, inserts, function (error, results, fields){
+      if(error) {
+        res.write(JSON.stringify(error));
+        res.end();
+      }
+      context.player = results[0];
+      complete();
+    });
+  }
+  //gets the page for /players
   router.get('/', function(req, res) {
     var callbackCount = 0;
     var context = {};
@@ -37,6 +51,21 @@ module.exports = function(){
       callbackCount++;
       if(callbackCount >= 2) {
         res.render('players', context);
+      }
+    }
+  })
+
+  router.get('/:id', function(req, res) {
+    callbackCount = 0;
+    var context = {};
+    context.jsscripts = ["updateplayer.js", "selectDrop.js"];
+    var mysql = req.app.get('mysql');
+    getPlayer(res, mysql, context, req.params.id, complete);
+    getTeams(res, mysql, context, complete);
+    function complete(){
+      callbackCount++;
+      if(callbackCount>=2) {
+        res.render('updateplayer', context);
       }
     }
   })
