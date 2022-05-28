@@ -209,9 +209,13 @@ tr:hover{
 	margin: 10px 30px;
 }
 
-.crud p, .crud input {
+.crud p {
 	margin-left: 5px;
-	padding: 2px;
+	padding:  10px 2px;
+}
+.crud input {
+	margin-left: 5px;
+	padding:  2px;
 }
 
 .footer{

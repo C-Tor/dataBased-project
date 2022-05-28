@@ -22,15 +22,12 @@
   <h2>Add Team</h2>
 
   <form class="" action="/teams" method="post">
-    <br>
     <p>
     Team Name: <input type="text" id="team_name" placeholder="Input team name here" name="team_name">
     </p>
-    <br>
     <p>
     Hometown: <input type="text" id="hometown" placeholder="Input team hometown here" name="hometown">
     </p>
-    <br>
     <p>
       Division <select name="division">
         {{#each divisions}}
@@ -38,7 +35,6 @@
         {{/each}}
       </select>
     </p>
-    <br>
     <input type="submit" value="Add Team">
   </form>
 

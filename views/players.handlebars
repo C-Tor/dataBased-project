@@ -18,6 +18,7 @@
         <td>{{player_number}}</td>
         <td>{{birth_date}}</td>
         <td>{{position}}</td>
+        <td><button type="button" name="button">Delete</button></td>
       </tr>
       {{/each}}
     </tbody>
@@ -28,19 +29,15 @@
   <h2>Add Player</h2>
 
 <form class="" action="/players" method="post">
-  <br>
   <p>
     First Name: <input type="text" id="player_fname" placeholder="Input player name here" name="fname">
   </p>
-  <br>
   <p>
     Middle Name: <input type="text" id="player_mname" placeholder="Input player number here" name = "mname">
   </p>
-  <br>
   <p>
     Last Name*: <input type="text" id="player_lname" placeholder="Input player name here" name = "lname">
   </p>
-  <br>
   <p>
     Team: <select name="team">
       {{#each teams}}
@@ -48,20 +45,16 @@
       {{/each}}
     </select>
   </p>
-  <br>
   <p>
     Jersey Number: <input type="text" id="player_number" placeholder="Input player number here" name = "number">
   </p>
-  <br>
   <p>
     Birthdate: <input type="date" id="birthdate" name = "birthdate" value="">
   </p>
-  <br>
   <p>
     Position: <input type="text" id="player_number" placeholder="Input player number here" name = "position">
   </p>
   <p><span class="notes">*indicates a required field</span></p>
-  <br>
   <input type="submit" value="Add Player">
 </form>
 

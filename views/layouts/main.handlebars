@@ -10,7 +10,9 @@
 
     <link rel="stylesheet" href="/style.css">
     <script src="https://cdn.jsdelivr.net/npm/handlebars@latest/dist/handlebars.js"></script>
-
+    {{#each jsscripts}}
+    <script src="/static/{{this}}"></script>
+    {{/each}}
   </head>
   <body>
 	<div class="header">

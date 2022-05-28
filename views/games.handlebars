@@ -26,11 +26,9 @@
   <h2>Add Game</h2>
 
   <form class="" action="/games" method="post">
-    <br>
     <p>
       Date: <input type="date" id="end" value="" min="1800-01-01" max="3000-12-31" name="gamedate">
     </p>
-    <br>
     <p>
       Home Team: <select name="hometeam">
         {{#each teams}}
@@ -38,7 +36,6 @@
         {{/each}}
       </select>
     </p>
-    <br>
     <p>
       Away Team: <select name="awayteam">
         {{#each teams}}
@@ -46,15 +43,12 @@
         {{/each}}
       </select>
     </p>
-    <br>
     <p>
       Home Score: <input type="number" id="home_score" placeholder="Home points" name="homescore">
     </p>
-    <br>
     <p>
       Away Score: <input type="number" id="away_score" placeholder="Away points" name="awayscore">
     </p>
-    <br>
     <input type="submit" value="Add Game">
   </form>
 
