@@ -3,7 +3,7 @@ module.exports = function(){
   var router = express.Router();
 
   function getTeams(res, mysql, context, complete) {
-    console.log(" -- getting teams")
+    // console.log(" -- getting teams")
     mysql.pool.query("SELECT teams.team_id, divisions.div_name, hometown, team_name FROM teams JOIN divisions ON teams.div_id = divisions.div_id ORDER BY teams.div_id;", function (error, results, fields){
       if(error) {
         res.write(JSON.stringify(error));
@@ -16,7 +16,7 @@ module.exports = function(){
 
   //used to populate division dropdown menus (only 2 divisions I coulda just hardcoded this in)
   function getDivisions(res, mysql, context, complete){
-    console.log(" -- getting divisions for teams page");
+    // console.log(" -- getting divisions for teams page");
     mysql.pool.query("SELECT div_id as id, div_name FROM divisions;", function(error, results, fields){
       if(error) {
         res.write(JSON.stringify(error));

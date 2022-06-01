@@ -3,7 +3,7 @@ module.exports = function(){
   var router = express.Router();
 
   function getGames(res, mysql, context, complete) {
-    console.log(" -- getting games")
+    // console.log(" -- getting games")
     mysql.pool.query("SELECT game_id, h_teams.team_name AS hometeam_name, a_teams.team_name as awayteam_name, home_score, away_score, DATE_FORMAT(game_date, '%a %b %D, %Y') AS gdate FROM games JOIN teams as h_teams ON games.home_team = h_teams.team_id JOIN teams as a_teams ON games.away_team = a_teams.team_id ORDER BY game_date;", function (error, results, fields){
       if(error) {
         res.write(JSON.stringify(error));
@@ -16,7 +16,7 @@ module.exports = function(){
 
   //used to populate the teams dropdown menu
   function getTeams(res, mysql, context, complete){
-    console.log(" -- getting teams for games page");
+    // console.log(" -- getting teams for games page");
     mysql.pool.query("SELECT team_id as id, team_name FROM teams;", function(error, results, fields){
       if(error) {
         res.write(JSON.stringify(error));
