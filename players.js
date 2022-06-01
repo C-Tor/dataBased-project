@@ -4,7 +4,7 @@ module.exports = function(){
 
   function getPlayers(res, mysql, context, complete) {
     console.log(" -- getting players")
-    mysql.pool.query("SELECT players.player_id, teams.team_name, players.fname, players.lname, players.player_number, DATE_FORMAT(players.player_birthdate, '%b %D, %Y') AS birth_date, players.position FROM players INNER JOIN teams ON players.team_id = teams.team_id ORDER BY teams.team_name;", function (error, results, fields){
+    mysql.pool.query("SELECT players.player_id, teams.team_name, players.fname, players.lname, players.player_number, DATE_FORMAT(players.player_birthdate, '%b %D, %Y') AS birth_date, players.position FROM players LEFT JOIN teams ON players.team_id = teams.team_id ORDER BY teams.team_id;", function (error, results, fields){
       if(error) {
         res.write(JSON.stringify(error));
         res.end();
@@ -65,7 +65,7 @@ module.exports = function(){
     getTeams(res, mysql, context, complete);
     function complete(){
       callbackCount++;
-      if(callbackCount>=3) {
+      if(callbackCount>=2) {
         res.render('updateplayer', context);
       }
     }
@@ -78,10 +78,11 @@ module.exports = function(){
     var inserts = [req.body.fname, req.body.mname, req.body.lname, req.body.team, req.body.number, req.body.birthdate, req.body.position];
     sql = mysql.pool.query(sql, inserts, function(error, results, fields){
       if(error) {
-        console.log(error);
-        res.write(JSON.stringify(error));
-        res.end();
-      }
+        console.log(error.sqlMessage);
+        res.redirect('/players');
+        // res.write(JSON.stringify(error));
+        // res.end();
+      } else
       res.redirect('/players');
     });
   });
