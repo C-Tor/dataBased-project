@@ -13,6 +13,7 @@
         <td>{{hometown}}</td>
         <td>{{team_name}}</td>
         <td><button onclick = "deleteTeam({{team_id}})">Delete</button></td>
+        <td><a href="/teams/{{team_id}}">Update</a></td>
       </tr>
       {{/each}}
     </tbody>
@@ -32,7 +33,7 @@
     <p>
       Division <select name="division">
         {{#each divisions}}
-          <option value="{{id}}"> {{div_name}}</option>
+          <option value="{{div_id}}"> {{div_name}}</option>
         {{/each}}
       </select>
     </p>

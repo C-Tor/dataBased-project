@@ -3,7 +3,7 @@ module.exports = function(){
   var router = express.Router();
 
   function getPlayers(res, mysql, context, complete) {
-    // console.log(" -- getting players")
+    console.log(" -- getting players")
     mysql.pool.query("SELECT players.player_id, teams.team_name, players.fname, players.lname, players.player_number, DATE_FORMAT(players.player_birthdate, '%b %D, %Y') AS birth_date, players.position FROM players LEFT JOIN teams ON players.team_id = teams.team_id ORDER BY teams.team_id;", function (error, results, fields){
       if(error) {
         res.write(JSON.stringify(error));
@@ -16,7 +16,7 @@ module.exports = function(){
 
   //used to populate team dropdown menus
   function getTeams(res, mysql, context, complete){
-    // console.log(" -- getting teams for player page");
+    console.log(" -- getting teams for player page");
     mysql.pool.query("SELECT team_id as id, team_name FROM teams;", function(error, results, fields){
       if(error) {
         res.write(JSON.stringify(error));
@@ -29,7 +29,7 @@ module.exports = function(){
 
   //get player with an id, used for update player page
   function getPlayer(res, mysql, context, id, complete) {
-    var sql ="SELECT player_id, fname, mname, lname, player_number AS number, player_birthdate, position, team_id FROM players WHERE player_id = ?"
+    var sql ="SELECT player_id, fname, mname, lname, player_number AS number, player_birthdate, position, team_id FROM players WHERE player_id = ?";
     var inserts = [id];
     mysql.pool.query(sql, inserts, function (error, results, fields){
       if(error) {

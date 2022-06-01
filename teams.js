@@ -3,7 +3,7 @@ module.exports = function(){
   var router = express.Router();
 
   function getTeams(res, mysql, context, complete) {
-    // console.log(" -- getting teams")
+    console.log(" -- getting teams")
     mysql.pool.query("SELECT teams.team_id, divisions.div_name, hometown, team_name FROM teams JOIN divisions ON teams.div_id = divisions.div_id ORDER BY teams.div_id;", function (error, results, fields){
       if(error) {
         res.write(JSON.stringify(error));
@@ -16,13 +16,27 @@ module.exports = function(){
 
   //used to populate division dropdown menus (only 2 divisions I coulda just hardcoded this in)
   function getDivisions(res, mysql, context, complete){
-    // console.log(" -- getting divisions for teams page");
-    mysql.pool.query("SELECT div_id as id, div_name FROM divisions;", function(error, results, fields){
+    console.log(" -- getting divisions for teams page");
+    mysql.pool.query("SELECT div_id, div_name FROM divisions;", function(error, results, fields){
       if(error) {
         res.write(JSON.stringify(error));
         res.end();
       }
       context.divisions = results;
+      complete();
+    });
+  }
+
+  //get team with an id, used for update team page
+  function getTeam(res, mysql, context, id, complete) {
+    var sql ="SELECT teams.team_id, hometown, team_name, div_id FROM teams WHERE team_id = ?";
+    var inserts = [id];
+    mysql.pool.query(sql, inserts, function (error, results, fields){
+      if(error) {
+        res.write(JSON.stringify(error));
+        res.end();
+      }
+      context.team = results[0];
       complete();
     });
   }
@@ -47,12 +61,12 @@ module.exports = function(){
         var context = {};
         context.jsscripts = ["deleteTeam.js" , "selectDrop.js", "updateteam.js"];
         var mysql = req.app.get('mysql');
-        getTeams(res, mysql, context, req.params.id, complete);
+        getTeam(res, mysql, context, req.params.id, complete);
         getDivisions(res, mysql, context, complete);
         function complete(){
             callbackCount++;
-            if(callbackCount>=3) {
-                res.render('teams', context);
+            if(callbackCount>=2) {
+                res.render('updateteam', context);
             }
         }
     })

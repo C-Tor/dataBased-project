@@ -1,0 +1,18 @@
+<div class="crud">
+  <h2>Update {{team.hometown}} {{team.team_name}}</h2>
+
+  <form id="update-team" action="/teams" method="post">
+    <p>Team Name: <input type="text" name="team_name" value="{{team.team_name}}"></p>
+    <p>Hometown: <input type="text" name="hometown" value="{{team.hometown}}"></p>
+    <p>
+      Division <select name="division" id="div-selector">
+        {{#each divisions}}
+          <option value="{{div_id}}"> {{div_name}}</option>
+        {{/each}}
+      </select>
+    </p>
+  </form>
+  <button type="button" onclick="updateTeam({{team.team_id}})">Update Team</button>
+  <script defer>selectDiv({{team.div_id}});</script>
+
+</div>
