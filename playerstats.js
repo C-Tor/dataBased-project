@@ -4,7 +4,7 @@ module.exports = function(){
 
   function getPlayerstats(res, mysql, context, complete) {
     console.log(" -- getting playerstats")
-    mysql.pool.query("SELECT players.fname, players.lname, games.game_date, points, assists, rebounds FROM player_statistics JOIN games ON games.game_id = player_statistics.game_id  JOIN players ON players.player_id=player_statistics.player_id;", function (error, results, fields){
+    mysql.pool.query("SELECT player_statistics.player_id, player_statistics.game_id, players.fname, players.lname, games.game_date, points, assists, rebounds FROM player_statistics JOIN games ON games.game_id = player_statistics.game_id  JOIN players ON players.player_id=player_statistics.player_id;", function (error, results, fields){
       if(error) {
         res.write(JSON.stringify(error));
         res.end();
@@ -41,6 +41,7 @@ module.exports = function(){
   router.get('/', function(req, res) {
     var callbackCount = 0;
     var context = {};
+    context.jsscripts = ["deletePlayerStatistics.js" , "selectDrop.js"];
     var mysql = req.app.get('mysql');
     getPlayerstats(res, mysql, context, complete);
     getPlayers(res, mysql, context, complete);
@@ -52,6 +53,22 @@ module.exports = function(){
       }
     }
   })
+
+
+  router.get('/:id', function(req, res) {
+    callbackCount = 0;
+    var context = {};
+    context.jsscripts = ["deletePlayerStatistics.js" , "selectDrop.js"];
+    var mysql = req.app.get('mysql');
+    getTeams(res, mysql, context, req.params.id, complete);
+    getDivisions(res, mysql, context, complete);
+    function complete(){
+        callbackCount++;
+        if(callbackCount>=3) {
+            res.render('teams', context);
+        }
+    }
+})
 
 
   router.post('/', function(req, res) {
@@ -68,6 +85,22 @@ module.exports = function(){
     });
   });
 
+
+  router.delete("/player_id/:player_id/game_id/:game_id", function (req, res) {
+    var mysql = req.app.get("mysql");
+    var sql = "DELETE FROM player_statistics WHERE player_id = ? AND game_id = ?;";
+    var inserts = [req.params.player_id, req.params.game_id];
+    sql = mysql.pool.query(sql, inserts, function (error, results, fields) {
+        if (error) {
+            console.log(error);
+            res.write(JSON.stringify(error));
+            res.status(400);
+            res.end();
+        } else {
+            res.status(202).end();
+        }
+    });
+});
 
   return router;
 
