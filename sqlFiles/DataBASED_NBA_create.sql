@@ -45,6 +45,7 @@ CREATE TABLE players (
   player_birthdate date,
   position varchar(255),
   team_id int(11),
+  CONSTRAINT lname_notblank CHECK (lname != ""),
   PRIMARY KEY (player_id),
   FOREIGN KEY (team_id) REFERENCES teams(team_id)
     ON UPDATE CASCADE
