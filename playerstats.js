@@ -65,7 +65,7 @@ module.exports = function(){
     function complete(){
         callbackCount++;
         if(callbackCount>=3) {
-            res.render('teams', context);
+            res.render('playerstats', context);
         }
     }
 })
