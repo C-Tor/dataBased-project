@@ -1,5 +1,5 @@
 
-function deleteteam(team_id) {
+function deleteTeam(team_id) {
     $.ajax({
         url: "/teams/" + team_id,
         type: "DELETE",

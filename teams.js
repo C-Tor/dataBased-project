@@ -4,7 +4,7 @@ module.exports = function(){
 
   function getTeams(res, mysql, context, complete) {
     console.log(" -- getting teams")
-    mysql.pool.query("SELECT divisions.div_name, hometown, team_name FROM teams JOIN divisions ON teams.div_id = divisions.div_id ORDER BY teams.div_id;", function (error, results, fields){
+    mysql.pool.query("SELECT teams.team_id, divisions.div_name, hometown, team_name FROM teams JOIN divisions ON teams.div_id = divisions.div_id ORDER BY teams.div_id;", function (error, results, fields){
       if(error) {
         res.write(JSON.stringify(error));
         res.end();
@@ -30,7 +30,7 @@ module.exports = function(){
   router.get('/', function(req, res) {
     var callbackCount = 0;
     var context = {};
-    context.jsscripts = ["deleteTeam.js"];
+    context.jsscripts = ["deleteTeam.js", "selectDrop.js", "updateteam.js"];
     var mysql = req.app.get('mysql');
     getTeams(res, mysql, context, complete);
     getDivisions(res, mysql, context, complete);
@@ -45,7 +45,7 @@ module.exports = function(){
   router.get('/:id', function(req, res) {
         callbackCount = 0;
         var context = {};
-        context.jsscripts = ["deleteTeam.js" , "selectDrop.js"];
+        context.jsscripts = ["deleteTeam.js" , "selectDrop.js", "updateteam.js"];
         var mysql = req.app.get('mysql');
         getTeams(res, mysql, context, req.params.id, complete);
         getDivisions(res, mysql, context, complete);
