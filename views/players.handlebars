@@ -18,7 +18,7 @@
         <td>{{player_number}}</td>
         <td>{{birth_date}}</td>
         <td>{{position}}</td>
-        <td><button type="button" name="button">Delete</button></td>
+        <td><button onclick = "deletePlayer({{player_id}})">Delete</button></td>
         <td><a href="/players/{{player_id}}">Update</a></td>
       </tr>
       {{/each}}
