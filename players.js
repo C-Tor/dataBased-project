@@ -2,6 +2,8 @@ module.exports = function(){
   var express = require('express');
   var router = express.Router();
 
+
+
   function getPlayers(res, mysql, context, complete) {
     console.log(" -- getting players")
     mysql.pool.query("SELECT players.player_id, teams.team_name, players.fname, players.lname, players.player_number, DATE_FORMAT(players.player_birthdate, '%b %D, %Y') AS birth_date, players.position FROM players LEFT JOIN teams ON players.team_id = teams.team_id ORDER BY teams.team_id;", function (error, results, fields){
@@ -29,7 +31,7 @@ module.exports = function(){
 
   //get player with an id, used for update player page
   function getPlayer(res, mysql, context, id, complete) {
-    var sql ="SELECT player_id, fname, mname, lname, player_number AS number, player_birthdate, position, team_id FROM players WHERE player_id = ?";
+    var sql ="SELECT fname, mname, lname, player_number AS number, player_birthdate, position, team_id FROM players WHERE player_id = ?";
     var inserts = [id];
     mysql.pool.query(sql, inserts, function (error, results, fields){
       if(error) {
@@ -40,11 +42,30 @@ module.exports = function(){
       complete();
     });
   }
+
+
+  function getPeopleWithNameLike(req, res, mysql, context, complete) {
+    var query =
+    "SELECT team_name, fname, lname, player_number, DATE_FORMAT(player_birthdate, '%b %D, %Y') AS birth_date, position FROM players LEFT JOIN teams ON players.team_id = teams.team_id WHERE players.lname LIKE " + 
+    mysql.pool.escape(req.params.s + "%");
+      
+    mysql.pool.query(query, function (error, results, fields) {
+
+      if (error) {
+        res.write(JSON.stringify(error));
+        res.end();
+      }
+      context.players = results;
+      complete();
+    });
+  }
+
+
   //gets the page for /players
   router.get('/', function(req, res) {
     var callbackCount = 0;
     var context = {};
-    context.jsscripts = ["deletePlayer.js","updateplayer.js","selectDrop.js"];
+    context.jsscripts = ["deletePlayer.js","updateplayer.js","selectDrop.js", "searchAll.js"];
     var mysql = req.app.get('mysql');
     getPlayers(res, mysql, context, complete);
     getTeams(res, mysql, context, complete);
@@ -59,7 +80,7 @@ module.exports = function(){
   router.get('/:id', function(req, res) {
     callbackCount = 0;
     var context = {};
-    context.jsscripts = ["deletePlayer.js" , "updateplayer.js", "selectDrop.js"];
+    context.jsscripts = ["deletePlayer.js" , "updateplayer.js", "selectDrop.js", "searchAll.js"];
     var mysql = req.app.get('mysql');
     getPlayer(res, mysql, context, req.params.id, complete);
     getTeams(res, mysql, context, complete);
@@ -85,6 +106,25 @@ module.exports = function(){
       } else
       res.redirect('/players');
     });
+  });
+
+
+  router.get("/search/:s", function (req, res) {
+    var callbackCount = 0;
+    var context = {};
+    context.jsscripts = [
+    "deletePlayer.js" ,
+    "selectDrop.js", 
+    "searchAll.js"];
+    var mysql = req.app.get("mysql");
+    getPeopleWithNameLike(req, res, mysql, context, complete);
+    getTeams(res, mysql, context, complete);
+    function complete() {
+      callbackCount++;
+      if (callbackCount >= 2) {
+        res.render("players", context);
+      }
+    }
   });
 
   router.put('/:id', function(req, res) {

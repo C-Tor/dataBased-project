@@ -1,4 +1,17 @@
 <div class="list_container">
+<form id="search_people" action="" method="">
+    <label> Search players with last name:</label>
+    <input
+      id="last_name_search_string"
+      type="text"
+      name="last_name_search_string"
+      value=""
+      placeholder="Enter Players Last Name"
+    />
+    <input type="button" value="Search" onclick="searchPlayer()" />
+    <button><a class = "blacklink" href="/players">Reset Search</a></button>
+  </form>
+
   <h1>Players</h1>
   <table>
     <thead>
