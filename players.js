@@ -2,8 +2,6 @@ module.exports = function(){
   var express = require('express');
   var router = express.Router();
 
-
-
   function getPlayers(res, mysql, context, complete) {
     console.log(" -- getting players")
     mysql.pool.query("SELECT players.player_id, teams.team_name, players.fname, players.lname, players.player_number, DATE_FORMAT(players.player_birthdate, '%b %D, %Y') AS birth_date, players.position FROM players LEFT JOIN teams ON players.team_id = teams.team_id ORDER BY teams.team_id;", function (error, results, fields){
@@ -48,9 +46,7 @@ module.exports = function(){
     var query =
     "SELECT team_name, fname, lname, player_number, DATE_FORMAT(player_birthdate, '%b %D, %Y') AS birth_date, position FROM players LEFT JOIN teams ON players.team_id = teams.team_id WHERE players.lname LIKE " + 
     mysql.pool.escape(req.params.s + "%");
-      
     mysql.pool.query(query, function (error, results, fields) {
-
       if (error) {
         res.write(JSON.stringify(error));
         res.end();
@@ -82,8 +78,12 @@ module.exports = function(){
     var context = {};
     context.jsscripts = ["deletePlayer.js" , "updateplayer.js", "selectDrop.js", "searchAll.js"];
     var mysql = req.app.get('mysql');
-    getPlayer(res, mysql, context, req.params.id, complete);
-    getTeams(res, mysql, context, complete);
+
+    if (req.params.id === "search") {
+      res.redirect("/players");
+    } else {
+      getPlayer(res, mysql, context, req.params.id, complete);
+    }
     function complete(){
       callbackCount++;
       if(callbackCount>=2) {
@@ -117,6 +117,7 @@ module.exports = function(){
     "selectDrop.js", 
     "searchAll.js"];
     var mysql = req.app.get("mysql");
+    errormessage = "";
     getPeopleWithNameLike(req, res, mysql, context, complete);
     getTeams(res, mysql, context, complete);
     function complete() {
