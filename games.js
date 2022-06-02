@@ -27,10 +27,26 @@ module.exports = function(){
     })
   }
 
+  function getTeamWithNameLike(req, res, mysql, context, complete) {
+    var query =
+    "SELECT h_teams.team_name as hometeam_name, a_teams.team_name as awayteam_name, home_score, away_score, DATE_FORMAT(game_date, '%a %b %D, %Y') AS gdate FROM games INNER JOIN teams as h_teams ON h_teams.team_id = games.home_team JOIN teams as a_teams ON a_teams.team_id = games.away_team WHERE h_teams.team_name LIKE " + 
+    mysql.pool.escape(req.params.s + "%") + 
+    "OR a_teams.team_name LIKE " +
+    mysql.pool.escape(req.params.s + "%");
+    mysql.pool.query(query, function (error, results, fields) {
+      if (error) {
+        res.write(JSON.stringify(error));
+        res.end();
+      }
+      context.games = results;
+      complete();
+    });
+  }
+
   router.get('/', function(req, res) {
     var callbackCount = 0;
     var context = {};
-    context.jsscripts = ["deleteGame.js" , "selectDrop.js"];
+    context.jsscripts = ["deleteGame.js" , "selectDrop.js", "searchAll.js"];
     var mysql = req.app.get('mysql');
     getGames(res, mysql, context, complete);
     getTeams(res, mysql, context, complete);
@@ -45,10 +61,15 @@ module.exports = function(){
   router.get('/:id', function(req, res) {
     callbackCount = 0;
     var context = {};
-    context.jsscripts = ["deleteGame.js" , "selectDrop.js"];
+    context.jsscripts = ["deleteGame.js" , "selectDrop.js", "searchAll.js"];
     var mysql = req.app.get('mysql');
-    getTeams(res, mysql, context, req.params.id, complete);
-    getDivisions(res, mysql, context, complete);
+
+    if (req.params.id === "search") {
+      res.redirect("/games");
+    } else {
+      getTeams(res, mysql, context, req.params.id, complete);
+    }
+
     function complete(){
         callbackCount++;
         if(callbackCount>=3) {
@@ -72,6 +93,25 @@ module.exports = function(){
     })
   })
 
+
+  router.get("/search/:s", function (req, res) {
+    var callbackCount = 0;
+    var context = {};
+    context.jsscripts = [
+    "deleteGame.js" ,
+    "selectDrop.js", 
+    "searchAll.js"];
+    var mysql = req.app.get("mysql");
+    errormessage = "";
+    getTeamWithNameLike(req, res, mysql, context, complete);
+    getTeams(res, mysql, context, complete);
+    function complete() {
+      callbackCount++;
+      if (callbackCount >= 2) {
+        res.render("games", context);
+      }
+    }
+  });
 
 
   router.delete("/:id", function (req, res) {

@@ -38,10 +38,24 @@ module.exports = function(){
     })
   }
 
+  function getStatsLike(req, res, mysql, context, complete) {
+    var query =
+    "SELECT players.fname, players.lname, games.game_date, points, assists, rebounds FROM player_statistics INNER JOIN players ON players.player_id = player_statistics.player_id INNER JOIN games ON games.game_id = player_statistics.game_id WHERE players.lname LIKE " + 
+    mysql.pool.escape(req.params.s + "%");
+    mysql.pool.query(query, function (error, results, fields) {
+      if (error) {
+        res.write(JSON.stringify(error));
+        res.end();
+      }
+      context.playerstats = results;
+      complete();
+    });
+  }
+
   router.get('/', function(req, res) {
     var callbackCount = 0;
     var context = {};
-    context.jsscripts = ["deletePlayerStatistics.js" , "selectDrop.js"];
+    context.jsscripts = ["deletePlayerStatistics.js" , "selectDrop.js", "searchAll.js"];
     var mysql = req.app.get('mysql');
     getPlayerstats(res, mysql, context, complete);
     getPlayers(res, mysql, context, complete);
@@ -58,10 +72,15 @@ module.exports = function(){
   router.get('/:id', function(req, res) {
     callbackCount = 0;
     var context = {};
-    context.jsscripts = ["deletePlayerStatistics.js" , "selectDrop.js"];
+    context.jsscripts = ["deletePlayerStatistics.js" , "selectDrop.js", "searchAll.js"];
     var mysql = req.app.get('mysql');
-    getTeams(res, mysql, context, req.params.id, complete);
-    getDivisions(res, mysql, context, complete);
+
+    if (req.params.id === "search") {
+      res.redirect("/players");
+    } else {
+      getTeams(res, mysql, context, req.params.id, complete);
+    }
+
     function complete(){
         callbackCount++;
         if(callbackCount>=3) {
@@ -85,6 +104,26 @@ module.exports = function(){
     });
   });
 
+
+  router.get("/search/:s", function (req, res) {
+    var callbackCount = 0;
+    var context = {};
+    context.jsscripts = [
+    "deletePlayerStatistics.js" ,
+    "selectDrop.js", 
+    "searchAll.js"];
+    var mysql = req.app.get("mysql");
+    errormessage = "";
+    getStatsLike(req, res, mysql, context, complete);
+    getPlayers(res, mysql, context, complete);
+    //getGames(res, mysql, context, complete);
+    function complete() {
+      callbackCount++;
+      if (callbackCount >= 2) {
+        res.render("playerstats", context);
+      }
+    }
+  });
 
   router.delete("/player_id/:player_id/game_id/:game_id", function (req, res) {
     var mysql = req.app.get("mysql");

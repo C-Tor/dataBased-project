@@ -41,10 +41,26 @@ module.exports = function(){
     });
   }
 
+
+  function getTeamWithNameLike(req, res, mysql, context, complete) {
+    var query =
+    "SELECT div_name, hometown, team_name FROM teams LEFT JOIN divisions ON teams.div_id = divisions.div_id WHERE teams.team_name LIKE " + 
+    mysql.pool.escape(req.params.s + "%");
+    mysql.pool.query(query, function (error, results, fields) {
+      if (error) {
+        res.write(JSON.stringify(error));
+        res.end();
+      }
+      context.teams = results;
+      complete();
+    });
+  }
+
+
   router.get('/', function(req, res) {
     var callbackCount = 0;
     var context = {};
-    context.jsscripts = ["deleteTeam.js", "selectDrop.js", "updateteam.js"];
+    context.jsscripts = ["deleteTeam.js", "selectDrop.js", "updateteam.js", "searchAll.js"];
     var mysql = req.app.get('mysql');
     getTeams(res, mysql, context, complete);
     getDivisions(res, mysql, context, complete);
@@ -59,10 +75,15 @@ module.exports = function(){
   router.get('/:id', function(req, res) {
         callbackCount = 0;
         var context = {};
-        context.jsscripts = ["deleteTeam.js" , "selectDrop.js", "updateteam.js"];
+        context.jsscripts = ["deleteTeam.js" , "selectDrop.js", "updateteam.js", "searchAll.js"];
         var mysql = req.app.get('mysql');
-        getTeam(res, mysql, context, req.params.id, complete);
-        getDivisions(res, mysql, context, complete);
+
+        if (req.params.id === "search") {
+          res.redirect("/teams");
+        } else {
+          getTeam(res, mysql, context, req.params.id, complete);
+        }
+
         function complete(){
             callbackCount++;
             if(callbackCount>=2) {
@@ -83,6 +104,26 @@ module.exports = function(){
       }
       res.redirect('/teams');
     });
+  });
+
+
+  router.get("/search/:s", function (req, res) {
+    var callbackCount = 0;
+    var context = {};
+    context.jsscripts = [
+    "deleteTeam.js" ,
+    "selectDrop.js", 
+    "searchAll.js"];
+    var mysql = req.app.get("mysql");
+    errormessage = "";
+    getTeamWithNameLike(req, res, mysql, context, complete);
+    getDivisions(res, mysql, context, complete);
+    function complete() {
+      callbackCount++;
+      if (callbackCount >= 2) {
+        res.render("teams", context);
+      }
+    }
   });
 
     router.delete("/:id", function (req, res) {
