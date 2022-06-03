@@ -1,0 +1,27 @@
+<div class="crud">
+  <h2>Update Player Statistic</h2>
+
+  <form id="update-playerstat" action="/playerstats" method="put">
+    <p>
+      Player: <select id="player-selector" name="player" value="{{playerstat.ps_player}}">
+        {{#each players}}
+          <option value="{{player_id}}">{{pfname}} {{plname}}</option>
+        {{/each}}
+      </select>
+    </p>
+    <p>
+      Game: <select id="game-selector" name="game" value="{{playerstat.ps_game}}">
+        {{#each games}}
+          <option value="{{game_id}}">{{hometeam_name}} VS {{awayteam_name}}, {{gdate}}</option>
+        {{/each}}
+      </select>
+    </p>
+    <p>Points: <input type="number" placeholder="points" name="points" step="1" min="-1000" value="{{playerstat.points}}"></p>
+    <p>Assists: <input type="number" placeholder="assists" name="assists" step="1" min="0" value="{{playerstat.assists}}"></p>
+    <p>Rebounds: <input type="number" name="rebounds" step="1" min="0" value="{{playerstat.rebounds}}"></p>
+  </form>
+  <button type="button" onclick="updatePlayerstat({{playerstat.ps_player}}, {{playerstat.ps_game}})">Update Player Statistic</button>
+  <script defer>selectPlayer({{playerstat.ps_player}});</script>
+  <script defer>selectGame({{playerstat.ps_game}});</script>
+
+</div>

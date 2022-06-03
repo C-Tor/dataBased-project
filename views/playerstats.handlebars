@@ -32,6 +32,7 @@
         <td>{{assists}}</td>
         <td>{{rebounds}}</td>
         <td><button onclick = "deletePlayerStatistics({{player_id}}, {{game_id}})">Delete</button></td>
+        <td><a href="/playerstats/player_id/{{player_id}}/game_id/{{game_id}}">Update</a></td>
       </tr>
       {{/each}}
     </tbody>
@@ -56,20 +57,10 @@
         {{/each}}
       </select>
     </p>
-    <p>
-      Points: <input type="number" id="points" placeholder="points" name = "points" step="1" min="-1000">
-    </p>
-    <p>
-      Assists: <input type="number" id="assists" placeholder="assists" name = "assists" step="1" min="0">
-    </p>
-    <p>
-      Rebounds: <input type="number" id="rebounds" placeholder="rebounds" name = "rebounds" step="1" min="0">
-    </p>
+    <p>Points: <input type="number" id="points" placeholder="points" name = "points" step="1" min="-1000"></p>
+    <p>Assists: <input type="number" id="assists" placeholder="assists" name = "assists" step="1" min="0"></p>
+    <p>Rebounds: <input type="number" id="rebounds" placeholder="rebounds" name = "rebounds" step="1" min="0"></p>
     <input type="submit" value="Add Player">
   </form>
-
-
-
-
 
 </div>

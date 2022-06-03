@@ -38,6 +38,21 @@ module.exports = function(){
     })
   }
 
+  //get playerstat with an id, used for update game page
+  function getPlayerstat(res, mysql, context, pid, gid, complete) {
+    console.log(" -- getting playerstat for update games page (player: " + pid + " Game: " + gid + ")");
+    var sql ="SELECT player_statistics.player_id AS ps_player, player_statistics.game_id AS ps_game, players.fname, players.lname, DATE_FORMAT(games.game_date, '%a %b %D, %Y') AS gdate, points, assists, rebounds FROM player_statistics JOIN games ON games.game_id = player_statistics.game_id  JOIN players ON players.player_id=player_statistics.player_id WHERE player_statistics.player_id = ? AND player_statistics.game_id = ?;";
+    var inserts = [pid, gid];
+    mysql.pool.query(sql, inserts, function (error, results, fields){
+      if(error) {
+        res.write(JSON.stringify(error));
+        res.end();
+      }
+      context.playerstat = results[0];
+      complete();
+    });
+  }
+
   function getStatsLike(req, res, mysql, context, complete) {
     var query =
     "SELECT players.fname, players.lname, games.game_date, points, assists, rebounds FROM player_statistics INNER JOIN players ON players.player_id = player_statistics.player_id INNER JOIN games ON games.game_id = player_statistics.game_id WHERE players.lname LIKE " +
@@ -69,22 +84,24 @@ module.exports = function(){
   })
 
 
-  router.get('/:id', function(req, res) {
+  router.get('/player_id/:pid/game_id/:gid', function(req, res) {
     callbackCount = 0;
     var context = {};
-    context.jsscripts = ["deletePlayerStatistics.js" , "selectDrop.js", "searchAll.js"];
+    context.jsscripts = ["deletePlayerStatistics.js", "updateplayerstat.js", "selectDrop.js", "searchAll.js"];
     var mysql = req.app.get('mysql');
 
     if (req.params.id === "search") {
       res.redirect("/players");
     } else {
-      getTeams(res, mysql, context, req.params.id, complete);
+      getPlayerstat(res, mysql, context, req.params.pid, req.params.gid, complete);
+      getPlayers(res, mysql, context, complete);
+      getGames(res, mysql, context, complete);
     }
 
     function complete(){
         callbackCount++;
         if(callbackCount>=3) {
-            res.render('playerstats', context);
+            res.render('updateplayerstat', context);
         }
     }
 })
@@ -104,6 +121,21 @@ module.exports = function(){
     });
   });
 
+  router.put('/player_id/:pid/game_id/:gid', function(req, res) {
+    console.log(" -- received PUT request for /playerstats/" + req.params.pid + "/game_id/" + req.params.gid);
+    var mysql = req.app.get('mysql');
+    var sql = "UPDATE player_statistics SET player_id = ?, game_id = ?, points = ?, assists = ?, rebounds = ? WHERE player_id = ? AND game_id = ?";
+    var inserts = [req.body.player, req.body.game, req.body.points, req.body.assists, req.body.rebounds, req.params.pid, req.params.gid];
+    sql = mysql.pool.query(sql, inserts, function(error, results, fields){
+      if (error) {
+        console.log(error);
+        res.write(JSON.stringify(error));
+        res.end();
+      }
+      res.status(202);
+      res.end();
+    })
+  });
 
   router.get("/search/:s", function (req, res) {
     var callbackCount = 0;
