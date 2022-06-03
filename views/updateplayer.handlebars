@@ -14,7 +14,15 @@
     </p>
     <p>Jersey Number: <input type="text" name = "number" value="{{player.number}}"></p>
     <p>Birthdate: <input type="date" name = "birthdate" value="{{player.p_birthday}}"></p>
-    <p>Position: <input type="text" name = "position" value="{{player.position}}"></p>
+    <p>
+      Position: <select name="position">
+        <option value="Point Guard">Point Guard</option>
+        <option value="Shooting Guard">Shooting Guard</option>
+        <option value="Power Forward">Power Forward</option>
+        <option value="Small Forward">Small Forward</option>
+        <option value="Center">Center</option>
+    </select>
+  </p>
     <p><span class="notes">*indicates a required field</span></p>
   </form>
   <button type="button" onclick="updatePlayer({{player.player_id}})">Update Player</button>
