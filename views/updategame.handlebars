@@ -17,8 +17,8 @@
         {{/each}}
       </select>
     </p>
-    <p>Home Score: <input type="number" name="home_score" value="{{game.home_score}}"></p>
-    <p>Away Score: <input type="number" name="away_score" value="{{game.away_score}}"></p>
+    <p>Home Score: <input type="number" name="home_score" min="0"  value="{{game.home_score}}"></p>
+    <p>Away Score: <input type="number" name="away_score" min="0" value="{{game.away_score}}"></p>
   </form>
   <button type="button" onclick="updateGame({{game.game_id}})">Update Team</button>
   <script defer>selectHomeTeam({{game.home_team}});</script>
