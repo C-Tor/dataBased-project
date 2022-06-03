@@ -127,6 +127,22 @@ module.exports = function(){
     }
   });
 
+  router.put('/:id', function(req, res) {
+    console.log(" -- received PUT request for /teams/" + req.params.id);
+    var mysql = req.app.get('mysql');
+    var sql = "UPDATE teams SET hometown=?, team_name = ?, div_id = ? WHERE team_id = ?;";
+    var inserts = [req.body.hometown, req.body.team_name, req.body.division, req.params.id];
+    sql = mysql.pool.query(sql, inserts, function(error, results, fields){
+      if (error) {
+        console.log(error);
+        res.write(JSON.stringify(error));
+        res.end();
+      }
+      res.status(200);
+      res.end();
+    })
+  });
+
     router.delete("/:id", function (req, res) {
         var mysql = req.app.get("mysql");
         var sql = "DELETE FROM teams WHERE team_id = ?";

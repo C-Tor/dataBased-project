@@ -1,7 +1,7 @@
 
 -- Teams
 -- View teams
-SELECT team_id, hometown, team_name, div_id FROM teams ORDER BY div_id;
+SELECT teams.team_id, divisions.div_name, hometown, team_name FROM teams JOIN divisions ON teams.div_id = divisions.div_id ORDER BY teams.div_id;
 
 -- Add team
 INSERT INTO teams (team_id, hometown, team_name, div_id) VALUES (:team_id_Input, :hometownInput, :team_name_Input, :div_id_Input);
