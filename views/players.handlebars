@@ -59,13 +59,19 @@
     </select>
   </p>
   <p>
-    Jersey Number: <input type="text" id="player_number" placeholder="Input player number here" name = "number">
+    Jersey Number: <input type="number" id="player_number" min="0" placeholder="Input player number here" name = "number">
   </p>
   <p>
     Birthdate: <input type="date" id="birthdate" name = "birthdate" value="">
   </p>
   <p>
-    Position: <input type="text" id="player_number" placeholder="Input player number here" name = "position">
+      Position: <select name="position">
+        <option value="Point Guard">Point Guard</option>
+        <option value="Shooting Guard">Shooting Guard</option>
+        <option value="Power Forward">Power Forward</option>
+        <option value="Small Forward">Small Forward</option>
+        <option value="Center">Center</option>
+    </select>
   </p>
   <p><span class="notes">*indicates a required field</span></p>
   <input type="submit" value="Add Player">
