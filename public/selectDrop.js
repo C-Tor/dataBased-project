@@ -9,10 +9,10 @@ function selectDiv(id){
 
 function selectHomeTeam(id) {
   console.log("selecting Home team as: " + id);
-  $("home-selector").val(id);
+  $("#home-selector").val(id);
 }
 
 function selectAwayTeam(id) {
   console.log("selecting Away team as: " + id);
-  $("home-selector").val(id);
+  $("#away-selector").val(id);
 }

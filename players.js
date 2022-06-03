@@ -29,7 +29,7 @@ module.exports = function(){
 
   //get player with an id, used for update player page
   function getPlayer(res, mysql, context, id, complete) {
-    var sql ="SELECT player_id, fname, mname, lname, player_number AS number, player_birthdate, position, team_id FROM players WHERE player_id = ?";
+    var sql ="SELECT player_id, fname, mname, lname, player_number AS number, player_birthdate, DATE_FORMAT(player_birthdate, '%Y-%m-%d') AS p_birthday, position, team_id FROM players WHERE player_id = ?";
     var inserts = [id];
     mysql.pool.query(sql, inserts, function (error, results, fields){
       if(error) {

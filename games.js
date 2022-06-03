@@ -29,7 +29,8 @@ module.exports = function(){
 
   //get game with an id, used for update game page
   function getGame(res, mysql, context, id, complete) {
-    var sql ="SELECT game_id, h_teams.team_name AS hometeam_name, a_teams.team_name as awayteam_name, h_teams.team_id AS hteam_id, a_teams.team_id AS ateam_id, home_score, away_score, game_date FROM games JOIN teams as h_teams ON games.home_team = h_teams.team_id JOIN teams as a_teams ON games.away_team = a_teams.team_id WHERE game_id = ?";
+    console.log(" -- getting game for update games page");
+    var sql ="SELECT game_id, home_team, away_team, home_score, away_score, DATE_FORMAT(game_date, '%Y-%m-%d') As gamedate FROM games WHERE game_id = ?";
     var inserts = [id];
     mysql.pool.query(sql, inserts, function (error, results, fields){
       if(error) {
@@ -109,6 +110,21 @@ module.exports = function(){
     })
   })
 
+  router.put('/:id', function(req, res) {
+    console.log(" -- received PUT request for /games/" + req.params.id);
+    var mysql = req.app.get('mysql');
+    var sql = "UPDATE games SET game_date = ?, home_team = ?, away_team = ?, home_score = ?, away_score = ? WHERE game_id=?;";
+    var inserts = [req.body.game_date, req.body.hometeam, req.body.awayteam, req.body.home_score, req.body.away_score, req.params.id];
+    sql = mysql.pool.query(sql, inserts, function(error, results, fields){
+      if (error) {
+        console.log(error);
+        res.write(JSON.stringify(error));
+        res.end();
+      }
+      res.status(200);
+      res.end();
+    })
+  });
 
   router.get("/search/:s", function (req, res) {
     var callbackCount = 0;
