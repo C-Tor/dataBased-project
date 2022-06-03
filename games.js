@@ -27,10 +27,24 @@ module.exports = function(){
     })
   }
 
+  //get game with an id, used for update game page
+  function getGame(res, mysql, context, id, complete) {
+    var sql ="SELECT game_id, h_teams.team_name AS hometeam_name, a_teams.team_name as awayteam_name, h_teams.team_id AS hteam_id, a_teams.team_id AS ateam_id, home_score, away_score, game_date FROM games JOIN teams as h_teams ON games.home_team = h_teams.team_id JOIN teams as a_teams ON games.away_team = a_teams.team_id WHERE game_id = ?";
+    var inserts = [id];
+    mysql.pool.query(sql, inserts, function (error, results, fields){
+      if(error) {
+        res.write(JSON.stringify(error));
+        res.end();
+      }
+      context.game = results[0];
+      complete();
+    });
+  }
+
   function getTeamWithNameLike(req, res, mysql, context, complete) {
     var query =
-    "SELECT h_teams.team_name as hometeam_name, a_teams.team_name as awayteam_name, home_score, away_score, DATE_FORMAT(game_date, '%a %b %D, %Y') AS gdate FROM games INNER JOIN teams as h_teams ON h_teams.team_id = games.home_team JOIN teams as a_teams ON a_teams.team_id = games.away_team WHERE h_teams.team_name LIKE " + 
-    mysql.pool.escape(req.params.s + "%") + 
+    "SELECT h_teams.team_name as hometeam_name, a_teams.team_name as awayteam_name, home_score, away_score, DATE_FORMAT(game_date, '%a %b %D, %Y') AS gdate FROM games INNER JOIN teams as h_teams ON h_teams.team_id = games.home_team JOIN teams as a_teams ON a_teams.team_id = games.away_team WHERE h_teams.team_name LIKE " +
+    mysql.pool.escape(req.params.s + "%") +
     "OR a_teams.team_name LIKE " +
     mysql.pool.escape(req.params.s + "%");
     mysql.pool.query(query, function (error, results, fields) {
@@ -59,21 +73,23 @@ module.exports = function(){
   })
 
   router.get('/:id', function(req, res) {
+    console.log(" -- Request received for update games page.")
     callbackCount = 0;
     var context = {};
-    context.jsscripts = ["deleteGame.js" , "selectDrop.js", "searchAll.js"];
+    context.jsscripts = ["deleteGame.js" , "updategame.js", "selectDrop.js", "searchAll.js"];
     var mysql = req.app.get('mysql');
 
     if (req.params.id === "search") {
       res.redirect("/games");
     } else {
-      getTeams(res, mysql, context, req.params.id, complete);
+      getGame(res, mysql, context, req.params.id, complete);
+      getTeams(res, mysql, context, complete);
     }
 
     function complete(){
         callbackCount++;
-        if(callbackCount>=3) {
-            res.render('games', context);
+        if(callbackCount>=2) {
+            res.render('updategame', context);
         }
     }
 })
@@ -99,7 +115,7 @@ module.exports = function(){
     var context = {};
     context.jsscripts = [
     "deleteGame.js" ,
-    "selectDrop.js", 
+    "selectDrop.js",
     "searchAll.js"];
     var mysql = req.app.get("mysql");
     errormessage = "";

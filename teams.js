@@ -44,7 +44,7 @@ module.exports = function(){
 
   function getTeamWithNameLike(req, res, mysql, context, complete) {
     var query =
-    "SELECT div_name, hometown, team_name FROM teams LEFT JOIN divisions ON teams.div_id = divisions.div_id WHERE teams.team_name LIKE " + 
+    "SELECT div_name, hometown, team_name FROM teams LEFT JOIN divisions ON teams.div_id = divisions.div_id WHERE teams.team_name LIKE " +
     mysql.pool.escape(req.params.s + "%");
     mysql.pool.query(query, function (error, results, fields) {
       if (error) {
@@ -82,6 +82,7 @@ module.exports = function(){
           res.redirect("/teams");
         } else {
           getTeam(res, mysql, context, req.params.id, complete);
+          getDivisions(res, mysql, context, complete);
         }
 
         function complete(){
@@ -112,7 +113,7 @@ module.exports = function(){
     var context = {};
     context.jsscripts = [
     "deleteTeam.js" ,
-    "selectDrop.js", 
+    "selectDrop.js",
     "searchAll.js"];
     var mysql = req.app.get("mysql");
     errormessage = "";

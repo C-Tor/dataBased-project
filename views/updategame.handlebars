@@ -1,0 +1,27 @@
+<div class="crud">
+  <h2>Add Game</h2>
+
+  <form class="" action="/games" method="post" id="update-game">
+    <p>Date: <input type="date" min="1800-01-01" max="3000-12-31" name="game_date" value = "{{game.game_date}}"></p>
+    <p>
+      Home Team: <select name="hometeam" id="home-selector">
+        {{#each teams}}
+          <option value="{{id}}"> {{team_name}}</option>
+        {{/each}}
+      </select>
+    </p>
+    <p>
+      Away Team: <select name="awayteam" id="away-selector">
+        {{#each teams}}
+          <option value="{{id}}"> {{team_name}}</option>
+        {{/each}}
+      </select>
+    </p>
+    <p>Home Score: <input type="number" name="home_score" value="{{game.home_score}}"></p>
+    <p>Away Score: <input type="number" name="away_score" value="{{game.away_score}}"></p>
+  </form>
+  <button type="button" onclick="updateGame({{game.gameid}})">Update Team</button>
+  <script defer>selectHomeTeam({{h_teams.team_id}});</script>
+  <script defer>selectAwayTeam({{a_teams.team_id}});</script>
+
+</div>

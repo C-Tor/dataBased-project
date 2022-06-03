@@ -28,6 +28,7 @@
         <td>{{away_score}}</td>
         <td>{{gdate}}</td>
         <td><button onclick = "deleteGame({{game_id}})">Delete</button></td>
+        <td><a href="/games/{{game_id}}">Update</a></td>
       </tr>
       {{/each}}
     </tbody>
@@ -38,9 +39,7 @@
   <h2>Add Game</h2>
 
   <form class="" action="/games" method="post">
-    <p>
-      Date: <input type="date" id="end" value="" min="1800-01-01" max="3000-12-31" name="gamedate">
-    </p>
+    <p>Date: <input type="date" id="end" value="" min="1800-01-01" max="3000-12-31" name="gamedate"></p>
     <p>
       Home Team: <select name="hometeam">
         {{#each teams}}
@@ -55,18 +54,9 @@
         {{/each}}
       </select>
     </p>
-    <p>
-      Home Score: <input type="number" id="home_score" placeholder="Home points" name="homescore">
-    </p>
-    <p>
-      Away Score: <input type="number" id="away_score" placeholder="Away points" name="awayscore">
-    </p>
+    <p>Home Score: <input type="number" id="home_score" placeholder="Home points" name="homescore"></p>
+    <p>Away Score: <input type="number" id="away_score" placeholder="Away points" name="awayscore"></p>
     <input type="submit" value="Add Game">
   </form>
-
-
-  <!-- <input type="submit" value="Delete Game">
-  <input type="submit" value="Search Game">
-  <input type="submit" value="Update Game"> -->
 
 </div>

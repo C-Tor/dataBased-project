@@ -29,7 +29,7 @@ module.exports = function(){
 
   //get player with an id, used for update player page
   function getPlayer(res, mysql, context, id, complete) {
-    var sql ="SELECT fname, mname, lname, player_number AS number, player_birthdate, position, team_id FROM players WHERE player_id = ?";
+    var sql ="SELECT player_id, fname, mname, lname, player_number AS number, player_birthdate, position, team_id FROM players WHERE player_id = ?";
     var inserts = [id];
     mysql.pool.query(sql, inserts, function (error, results, fields){
       if(error) {
@@ -44,7 +44,7 @@ module.exports = function(){
 
   function getPeopleWithNameLike(req, res, mysql, context, complete) {
     var query =
-    "SELECT team_name, fname, lname, player_number, DATE_FORMAT(player_birthdate, '%b %D, %Y') AS birth_date, position FROM players LEFT JOIN teams ON players.team_id = teams.team_id WHERE players.lname LIKE " + 
+    "SELECT team_name, fname, lname, player_number, DATE_FORMAT(player_birthdate, '%b %D, %Y') AS birth_date, position FROM players LEFT JOIN teams ON players.team_id = teams.team_id WHERE players.lname LIKE " +
     mysql.pool.escape(req.params.s + "%");
     mysql.pool.query(query, function (error, results, fields) {
       if (error) {
@@ -83,6 +83,7 @@ module.exports = function(){
       res.redirect("/players");
     } else {
       getPlayer(res, mysql, context, req.params.id, complete);
+      getTeams(res, mysql, context, complete);
     }
     function complete(){
       callbackCount++;
@@ -114,7 +115,7 @@ module.exports = function(){
     var context = {};
     context.jsscripts = [
     "deletePlayer.js" ,
-    "selectDrop.js", 
+    "selectDrop.js",
     "searchAll.js"];
     var mysql = req.app.get("mysql");
     errormessage = "";
@@ -129,6 +130,7 @@ module.exports = function(){
   });
 
   router.put('/:id', function(req, res) {
+    console.log(" -- received PUT request for /players/" + req.params.id);
     var mysql = req.app.get('mysql');
     var sql = "UPDATE players SET fname=?, mname=?, lname=?, team_id=?, player_number=?, player_birthdate=?, position=? WHERE player_id=?;";
     var inserts = [req.body.fname, req.body.mname, req.body.lname, req.body.team, req.body.number, req.body.birthdate, req.body.position, req.params.id];
@@ -141,7 +143,7 @@ module.exports = function(){
       res.status(200);
       res.end();
     })
-  })
+  });
 
     router.delete("/:id", function (req, res) {
         var mysql = req.app.get("mysql");
